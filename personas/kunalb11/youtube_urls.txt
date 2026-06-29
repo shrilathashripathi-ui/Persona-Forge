@@ -1,0 +1,7 @@
+# YouTube URLs for Kunal Shah (@kunalb11)
+# Add one URL per line. Lines starting with # are ignored.
+# Find videos: search YouTube for "Kunal Shah" podcast appearances, talks, interviews.
+
+# Example interviews / talks — replace or add more:
+# https://www.youtube.com/watch?v=EXAMPLE1
+# https://www.youtube.com/watch?v=EXAMPLE2

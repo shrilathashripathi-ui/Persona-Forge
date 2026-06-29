@@ -1,0 +1,24 @@
+# Environment — never commit your API keys
+.env
+
+# Data — scraped data stays local, not in the repo
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

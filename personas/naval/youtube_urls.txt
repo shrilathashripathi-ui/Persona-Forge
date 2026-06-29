@@ -1,0 +1,7 @@
+# YouTube URLs for Naval Ravikant (@naval)
+# Add one URL per line. Lines starting with # are ignored.
+# Find videos: search YouTube for "Naval Ravikant" podcast appearances, talks, interviews.
+
+# Example interviews / talks — replace or add more:
+# https://www.youtube.com/watch?v=EXAMPLE1
+# https://www.youtube.com/watch?v=EXAMPLE2

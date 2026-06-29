@@ -1,0 +1,7 @@
+# YouTube URLs for Raj Shamani (@rajshamani)
+# Add one URL per line. Lines starting with # are ignored.
+# Find videos on his channel: youtube.com/@RajShamani
+
+# Example videos — replace or add more:
+# https://www.youtube.com/watch?v=EXAMPLE1
+# https://www.youtube.com/watch?v=EXAMPLE2
