@@ -10,11 +10,13 @@ Clone the writing style of any public thinker using their actual Twitter posts a
 
 Three personas ship with the repo — just run setup and they're ready:
 
-| Persona | Handle | Style |
-|---------|--------|-------|
-| Kunal Shah | `kunalb11` | Contrarian insight, trust/wealth frameworks, dense observations |
-| Naval Ravikant | `naval` | Philosophical, aphoristic, wealth + happiness + leverage |
-| Raj Shamani | `rajshamani` | Storytelling, entrepreneurship narrative, conversational energy |
+| Persona | Handle | Style | Data |
+|---------|--------|-------|------|
+| Kunal Shah | `kunalb11` | Contrarian insight, trust/wealth frameworks, dense observations | 132 samples |
+| Naval Ravikant | `naval` | Philosophical, aphoristic, wealth + happiness + leverage | 196 samples (tweets + transcripts) |
+| Raj Shamani | `rajshamani` | Storytelling, entrepreneurship narrative, conversational energy | 10 samples (tweets only — his YouTube videos had Hindi-only captions) |
+
+> Kunal and Naval give the richest output. Raj is thinner for now — add English YouTube videos to `personas/rajshamani/youtube_urls.txt` and re-run the pipeline to enrich him.
 
 ---
 
@@ -30,15 +32,20 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Set up API keys
+### 2. Set up your Anthropic API key
 
-Create a `.env` file with your Anthropic key:
+You have two options:
 
-```
-ANTHROPIC_API_KEY=sk-ant-...
-```
+- **In the app (easiest):** just run the app and paste your key into the sidebar field. It's used only for your browser session and never stored.
+- **Via `.env` (handy for local dev):** create a `.env` file so the key pre-fills automatically:
 
-You only need this one key to run the app. Scraping needs additional keys (see below).
+  ```
+  ANTHROPIC_API_KEY=sk-ant-...
+  ```
+
+You only need this one key to *use* the app. Scraping new personas needs an Apify token (see below).
+
+> Get an Anthropic key at [console.anthropic.com](https://console.anthropic.com). Each generation costs ~$0.01. Note: a claude.ai subscription does **not** cover API access — it's billed separately.
 
 ### 3. Set up pre-built personas
 
@@ -59,22 +66,32 @@ Open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ---
 
-## Adding a custom persona from scratch
+## Adding a new persona
 
-If you want to build a new persona (or re-scrape an existing one):
-
-### API keys needed for scraping
+### API key needed for scraping
 
 | Key | Where to get it | Used for |
 |-----|----------------|----------|
-| `APIFY_API_TOKEN` | [apify.com](https://apify.com) → Settings → Integrations | Twitter scraping (~$5–15 per 2,000 tweets) |
+| `APIFY_API_TOKEN` | [apify.com](https://apify.com) → Settings → Integrations | Twitter scraping |
 
 Add to `.env`:
 ```
 APIFY_API_TOKEN=apify_api_...
 ```
 
-### Run the pipeline
+### Option A — from the app (easiest)
+
+Open the **"➕ Add a new persona from a Twitter/X handle"** section on the main screen:
+
+1. Enter a public Twitter/X handle (e.g. `paulg`)
+2. Pick how many recent tweets to pull (10–200)
+3. Click **Build persona**
+
+The app scrapes → cleans → embeds in-process, shows live progress, and the new persona appears in the dropdown when it's done. This is Twitter-only — for richer personas with YouTube transcripts, use the CLI pipeline below.
+
+### Option B — full CLI pipeline (Twitter + YouTube)
+
+For a richer persona that also includes YouTube transcripts, or to re-scrape an existing one:
 
 ```bash
 # 1. Scrape tweets
