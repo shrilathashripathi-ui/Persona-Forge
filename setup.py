@@ -113,7 +113,7 @@ def main():
         action="store_true",
         help="Set up all pre-built personas",
     )
-    parser.add_argument(
+    group.add_argument(
         "--list",
         action="store_true",
         help="List available pre-built personas",
@@ -124,7 +124,7 @@ def main():
         print("\nAvailable pre-built personas:")
         for handle, name in AVAILABLE_PERSONAS.items():
             chroma_path = Path("data") / f"chroma_{handle}"
-            status = "✓ ready" if chroma_path.exists() else "not set up"
+            status = "[ready]" if chroma_path.exists() else "[not set up]"
             print(f"  {handle:<15} {name:<20} {status}")
         return
 
