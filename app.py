@@ -44,23 +44,20 @@ with st.sidebar:
     st.header("Setup")
 
     env_key = os.getenv("ANTHROPIC_API_KEY")
-    if env_key:
-        anthropic_key = env_key
-        st.success("Using API key from .env")
+    anthropic_key = st.text_input(
+        "Your Anthropic API key",
+        value=env_key or "",
+        type="password",
+        placeholder="sk-ant-...",
+        help="Your key is used only in your browser session and never stored.",
+    )
+    if anthropic_key:
+        st.success("Key set for this session.")
     else:
-        anthropic_key = st.text_input(
-            "Your Anthropic API key",
-            type="password",
-            placeholder="sk-ant-...",
-            help="Your key is used only in your browser session and never stored.",
+        st.info(
+            "Get an API key at [console.anthropic.com](https://console.anthropic.com). "
+            "Each generation costs ~$0.01."
         )
-        if anthropic_key:
-            st.success("Key set for this session.")
-        else:
-            st.info(
-                "Get a free API key at [console.anthropic.com](https://console.anthropic.com). "
-                "Each generation costs ~$0.01."
-            )
 
     st.divider()
 
