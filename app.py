@@ -17,7 +17,9 @@ import anthropic
 import streamlit as st
 from pathlib import Path
 from dotenv import load_dotenv
-from embedder.embed import load_collection, query_similar
+from embedder.embed import load_collection, query_similar, build_vector_store
+from scraper.twitter import scrape_tweets, save_tweets
+from cleaner.clean import clean_all
 
 load_dotenv()
 
@@ -101,19 +103,52 @@ if data_dir.exists():
         if d.is_dir() and d.name.startswith("chroma_")
     ]
 
+# Add a new persona straight from the UI (scrape Twitter -> clean -> embed)
+with st.expander("➕ Add a new persona from a Twitter/X handle"):
+    st.caption(
+        "Enter a public Twitter/X handle. We scrape their recent tweets, "
+        "build a style database, and add them to the dropdown above. "
+        "Requires an Apify token in your `.env` (used for scraping)."
+    )
+    new_handle = st.text_input(
+        "Twitter/X handle (without @)",
+        placeholder="e.g. paulg",
+        key="new_persona_handle",
+    )
+    max_tweets = st.slider(
+        "How many recent tweets to pull",
+        min_value=10, max_value=200, value=50, step=10,
+        help="More tweets = richer style, but slower and slightly higher Apify cost.",
+    )
+    if st.button("Build persona", disabled=not new_handle.strip()):
+        clean_handle = new_handle.strip().lstrip("@")
+        if not os.getenv("APIFY_API_TOKEN"):
+            st.error("No APIFY_API_TOKEN found in .env — scraping needs one.")
+        else:
+            try:
+                with st.status(f"Building @{clean_handle}...", expanded=True) as status:
+                    st.write(f"Scraping last {max_tweets} tweets...")
+                    tweets = scrape_tweets(clean_handle, max_tweets)
+                    save_tweets(tweets, clean_handle)
+
+                    st.write("Cleaning text...")
+                    csv_path = clean_all(clean_handle)
+                    if csv_path is None:
+                        status.update(label="No usable tweets found.", state="error")
+                        st.stop()
+
+                    st.write("Embedding into vector database...")
+                    build_vector_store(clean_handle)
+                    status.update(label=f"@{clean_handle} is ready!", state="complete")
+                st.success(f"Added @{clean_handle}. Select it in the dropdown above.")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Couldn't build that persona: {e}")
+
 if not available_handles:
     st.warning(
-        "No personas set up yet.\n\n"
-        "**Pre-built personas (fastest):**\n"
-        "```bash\n"
-        "python setup.py --all\n"
-        "```\n\n"
-        "**Custom persona:**\n"
-        "```bash\n"
-        "python scraper/twitter.py --handle USERNAME\n"
-        "python cleaner/clean.py --handle USERNAME\n"
-        "python embedder/embed.py --handle USERNAME\n"
-        "```"
+        "No personas set up yet. Add one above, or run `python setup.py --all` "
+        "to embed the pre-built personas (Kunal Shah, Naval Ravikant, Raj Shamani)."
     )
     st.stop()
 
