@@ -3,5 +3,5 @@
 # Find videos on his channel: youtube.com/@RajShamani
 
 # Example videos — replace or add more:
-# https://www.youtube.com/watch?v=EXAMPLE1
-# https://www.youtube.com/watch?v=EXAMPLE2
+https://www.youtube.com/watch?v=zPcNqulpx8k
+https://www.youtube.com/watch?v=sECyYwHJiaw
