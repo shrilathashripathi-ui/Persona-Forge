@@ -23,8 +23,8 @@ Three personas ship with the repo — just run setup and they're ready:
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/yourusername/persona-forge
-cd persona-forge
+git clone https://github.com/shrilathashripathi-ui/Persona-Forge
+cd Persona-Forge
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt

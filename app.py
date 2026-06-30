@@ -76,7 +76,7 @@ with st.sidebar:
     st.divider()
     st.markdown(
         "**persona-forge** is open source.\n\n"
-        "[View on GitHub](https://github.com/yourusername/persona-forge)"
+        "[View on GitHub](https://github.com/shrilathashripathi-ui/Persona-Forge)"
     )
 
 # Main
